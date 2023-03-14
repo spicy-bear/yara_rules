@@ -1,0 +1,9 @@
+rule socgolish_2 {
+    strings:
+        $wscript_str = "wscript.exe"
+        $zip_str = ".zip"
+        $js_str = ".js"
+
+    condition:
+        $wscript_str and ( $zip_str or $js_str )
+}
