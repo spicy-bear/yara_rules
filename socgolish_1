@@ -1,0 +1,9 @@
+rule socgolish_1 {
+    strings:
+        $nltest_str = "nltest.exe"
+        $domain_trusts_str = "domain_trusts"
+        $all_trusts_str = "all_trusts"
+
+    condition:
+        $nltest_str and ( $domain_trusts_str or $all_trusts_str )
+}
