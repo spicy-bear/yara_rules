@@ -1,0 +1,15 @@
+rule Veeam_WFC_Service_API_Call {
+  meta:
+    description = "Detects Veeam WFC service URL API call based on log data from Huntress"
+    reference = "https://www.huntress.com/blog/veeam-backup-replication-cve-2023-27532-response"
+    author = "spicy_bear"
+    date = "2023-03-16"
+
+  strings:
+    $module_path = /C:\\Program Files\\Veeam\\Backup and Replication\\Backup\\Veeam\.Backup\.Service\.exe/
+    $invoke_db = /Invoke: scope '{0}', method '{1}'/
+    $get_credentials = /GetCredentials, @id = [a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/
+    
+  condition:
+    all of them
+}
